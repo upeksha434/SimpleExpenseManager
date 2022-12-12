@@ -13,6 +13,8 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Transaction;
 public class PersistentTransactionDAO implements TransactionDAO {
     private SQLiteDatabase db;
 
+    
+
     public PersistentTransactionDAO(SQLiteDatabase db) {
         this.db = db;
     }
