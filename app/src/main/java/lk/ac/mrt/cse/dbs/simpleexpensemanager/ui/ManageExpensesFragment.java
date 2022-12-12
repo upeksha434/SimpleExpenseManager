@@ -47,14 +47,13 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
     private Spinner accountSelector;
     private RadioGroup expenseTypeGroup;
     private DatePicker datePicker;
-    private static ExpenseManager currentExpenseManager;
+    private ExpenseManager currentExpenseManager;
 
     public static ManageExpensesFragment newInstance(ExpenseManager expenseManager) {
         ManageExpensesFragment manageExpensesFragment = new ManageExpensesFragment();
         Bundle args = new Bundle();
         args.putSerializable(EXPENSE_MANAGER, expenseManager);
         manageExpensesFragment.setArguments(args);
-        currentExpenseManager = expenseManager;
         return manageExpensesFragment;
     }
 
@@ -114,11 +113,11 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
                                 .setMessage(e.getMessage())
                                 .setNeutralButton(this.getString(R.string.msg_ok),
                                         new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
                     }
                 }
                 amount.getText().clear();

@@ -22,10 +22,9 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
 public class PersistentAccountDAO /*extends SQLiteOpenHelper*/ implements AccountDAO {
 
     private static final int VERSION=1;
-    private static final String DB_NAME="account";
     private static final String TABLE_NAME="account";
 
-    private SQLiteOpenHelper dbHelper;
+    //private SQLiteOpenHelper dbHelper;
     private SQLiteDatabase db;
 
     public PersistentAccountDAO(SQLiteDatabase db) {
@@ -53,10 +52,10 @@ public class PersistentAccountDAO /*extends SQLiteOpenHelper*/ implements Accoun
 
     @Override
     public List<String> getAccountNumbersList() {
-        Log.d("DB", "db: "+db);
+        //Log.d("DB", "db: "+db);
         String[] projection=new String[]{"account_no"};
         Cursor cursor = db.query(TABLE_NAME,projection,null,null,null,null,null);
-        List accountNumbers = new ArrayList<>();
+        List<String> accountNumbers = new ArrayList<>();
 
         if(cursor.moveToFirst()){
             do{
@@ -73,7 +72,7 @@ public class PersistentAccountDAO /*extends SQLiteOpenHelper*/ implements Accoun
 
     @Override
     public List<Account> getAccountsList() {
-        db = dbHelper.getReadableDatabase();
+
         String[] projection=new String[]{"account_no","bank","acc_holder","balance"};
         Cursor cursor = db.query(TABLE_NAME,projection,null,null,null,null,null);
         List<Account> AccountsList= new ArrayList<>();
@@ -92,7 +91,7 @@ public class PersistentAccountDAO /*extends SQLiteOpenHelper*/ implements Accoun
 
     @Override
     public Account getAccount(String accountNo) throws InvalidAccountException {
-        db = dbHelper.getReadableDatabase();
+
         String[] projection=new String[]{"account_no"};
         String selection="account_no=?";
         String[] selectionArgs=new String[]{accountNo};
@@ -104,12 +103,13 @@ public class PersistentAccountDAO /*extends SQLiteOpenHelper*/ implements Accoun
         }
         Account AccountsList=new Account(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getDouble(3));
 
+        cursor.close();
         return AccountsList;
     }
 
     @Override
     public void addAccount(Account account) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
         ContentValues values = new ContentValues();
         values.put("account_no", account.getAccountNo());
         values.put("bank", account.getBankName());

@@ -11,7 +11,7 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl.PersistentTransactionDAO
 public class PersistentExpenseManager extends ExpenseManager {
     private Context context;
     @SuppressLint("SdCardPath")
-    private static final String DB_PATH = "/data/data/lk.ac.mrt.cse.dbs.simpleexpensemanager/databases/Quotesdb.db";
+    private static final String DB_PATH = "/data/data/lk.ac.mrt.cse.dbs.simpleexpensemanager/databases/200672M.db";
 
     public PersistentExpenseManager(Context context) {
         this.context=context;
@@ -20,12 +20,21 @@ public class PersistentExpenseManager extends ExpenseManager {
 
     @Override
     public void setup() {
-        SQLiteDatabase db = openOrCreateDatabase(DB_PATH, null, null);
+        SQLiteDatabase db = context.openOrCreateDatabase(DB_PATH, context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS account(" +
                 "account_no VARCHAR PRIMARY KEY," +
                 "bank VARCHAR," +
                 "acc_holder VARCHAR," +
                 "balance FLOAT" +
+                " );");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS transaction_log(" +
+                "transaction_id INTEGER PRIMARY KEY," +
+                "account_no VARCHAR," +
+                "date DATE," +
+                "expense_type VARCHAR," +
+                "amount FLOAT," +
+                "FOREIGN KEY (account_no) REFERENCES account(account_no)" +
                 " );");
 
 
