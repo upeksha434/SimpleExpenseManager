@@ -26,7 +26,7 @@ public class PersistentTransactionDAO implements TransactionDAO {
     @Override
     public void logTransaction(Date date, String accountNo, ExpenseType expenseType, double amount) {
         //Log.d("TransactionDAO", "logTransaction() called with: date = [" + date + "], accountNo = [" + accountNo + "], expenseType = [" + expenseType + "], amount = [" + amount + "]");
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy");
         ContentValues values = new ContentValues();
         values.put("date", dateFormat.format(date));
         values.put("account_no", accountNo);
@@ -38,9 +38,10 @@ public class PersistentTransactionDAO implements TransactionDAO {
     }
 
     @Override
-    public List<Transaction> getAllTransactionLogs() throws ParseException {
+    public List<Transaction> getAllTransactionLogs()  {
         List <Transaction>transaction = new ArrayList();
         Cursor cursor = db.query("transaction_log", null, null, null, null, null, null);
+        cursor.moveToFirst();
         while(cursor.moveToNext()) {
             Date date = new Date(cursor.getLong(2));
             String acc_no= cursor.getString(1);
@@ -64,7 +65,7 @@ public class PersistentTransactionDAO implements TransactionDAO {
     @Override
     public List<Transaction> getPaginatedTransactionLogs(int limit) throws ParseException {
         List <Transaction>transaction = new ArrayList();
-        Cursor cursor = db.query("transaction_log", null, null, null, null, null, null, String.valueOf(limit));
+        Cursor cursor = db.query("transaction_log", null, null, null, null, null, null, String.valueOf(20));
         cursor.moveToFirst();
         while(cursor.moveToNext()) {
             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
