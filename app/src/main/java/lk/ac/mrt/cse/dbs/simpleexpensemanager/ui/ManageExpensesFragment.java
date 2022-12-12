@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,13 +47,14 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
     private Spinner accountSelector;
     private RadioGroup expenseTypeGroup;
     private DatePicker datePicker;
-    private ExpenseManager currentExpenseManager;
+    private static ExpenseManager currentExpenseManager;
 
     public static ManageExpensesFragment newInstance(ExpenseManager expenseManager) {
         ManageExpensesFragment manageExpensesFragment = new ManageExpensesFragment();
         Bundle args = new Bundle();
         args.putSerializable(EXPENSE_MANAGER, expenseManager);
         manageExpensesFragment.setArguments(args);
+        currentExpenseManager = expenseManager;
         return manageExpensesFragment;
     }
 
@@ -71,6 +73,7 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
         ArrayAdapter<String> adapter =
                 null;
         if (currentExpenseManager != null) {
+            Log.d("ManageExpensesFragment", "currentExpenseManager is not null");
             adapter = new ArrayAdapter<>(this.getActivity(), R.layout.support_simple_spinner_dropdown_item,
                     currentExpenseManager.getAccountNumbersList());
         }

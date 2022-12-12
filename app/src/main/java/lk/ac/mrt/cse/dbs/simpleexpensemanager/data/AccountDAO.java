@@ -16,7 +16,10 @@
 
 package lk.ac.mrt.cse.dbs.simpleexpensemanager.data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.exception.InvalidAccountException;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Account;
@@ -27,6 +30,7 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
  * accounts and updating account balance.
  */
 public interface AccountDAO {
+
 
     /***
      * Get a list of account numbers.
@@ -65,6 +69,7 @@ public interface AccountDAO {
      * @throws InvalidAccountException - if the account number is invalid
      */
     public void removeAccount(String accountNo) throws InvalidAccountException;
+
 
     /***
      * Update the balance of the given account. The type of the expense is specified in order to determine which
