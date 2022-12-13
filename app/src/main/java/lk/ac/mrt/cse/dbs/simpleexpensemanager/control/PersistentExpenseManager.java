@@ -20,7 +20,7 @@ public class PersistentExpenseManager extends ExpenseManager {
 
     @Override
     public void setup() {
-        SQLiteDatabase db = context.openOrCreateDatabase(DB_PATH, context.MODE_PRIVATE, null);
+        SQLiteDatabase db = openOrCreateDatabase(DB_PATH, null, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS account(" +
                 "account_no VARCHAR PRIMARY KEY," +
                 "bank VARCHAR," +

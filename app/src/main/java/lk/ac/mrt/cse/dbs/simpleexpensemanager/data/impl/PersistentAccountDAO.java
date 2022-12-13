@@ -123,33 +123,32 @@ public class PersistentAccountDAO /*extends SQLiteOpenHelper*/ implements Accoun
     @Override
     public void removeAccount(String accountNo) throws InvalidAccountException {
         String selection="account_no=?";
-        String[] selectionArgs=new String[]{accountNo};
+        String[] selectionArgs=new String[]{String.valueOf(accountNo)};
         db.delete(TABLE_NAME,selection,selectionArgs);
 
     }
 
     @Override
     public void updateBalance(String accountNo, ExpenseType expenseType, double amount) throws InvalidAccountException {
-        /*first need to return the row containing the data of certain account holder*/
-        String[] projection=new String[]{"account_no"};
+        String[] projection=new String[]{"account_no", "bank", "acc_holder", "balance"};
         String selection="account_no=?";
-        String[] selectionArgs=new String[]{accountNo};
-        Cursor cursor= db.query(TABLE_NAME,projection, selection,selectionArgs,null,null,null);
-        /*cursor is pointing to the row containing the data of the account holder
-        * if it is not null*/
-        if(cursor !=null){
+        String[] selectionArgs=new String[]{String.valueOf(accountNo)};
+        Cursor cursor = db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+        if (cursor != null) {
             cursor.moveToFirst();
+
         }
-        ContentValues values=new ContentValues();
-        /*check whether the transaction is an expense or income*/
-        if(expenseType==ExpenseType.INCOME) {
+
+        double balance = cursor.getDouble(3);
+
+        ContentValues values = new ContentValues();
+        if (expenseType == ExpenseType.EXPENSE) {
+            values.put("balance", cursor.getDouble(3) - amount);
+        } else {
             values.put("balance", cursor.getDouble(3) + amount);
         }
-        else{
-            values.put("balance", cursor.getDouble(3) - amount);
-        }
-        db.update(TABLE_NAME,values,"account_no =?",new String[]{accountNo});
-
+        db.update("account",values,"account_no =?",new String[]{accountNo});
+        cursor.close();
     }
 
 

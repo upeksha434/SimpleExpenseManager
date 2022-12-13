@@ -1,5 +1,6 @@
 package lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,7 +27,7 @@ public class PersistentTransactionDAO implements TransactionDAO {
     @Override
     public void logTransaction(Date date, String accountNo, ExpenseType expenseType, double amount) {
         //Log.d("TransactionDAO", "logTransaction() called with: date = [" + date + "], accountNo = [" + accountNo + "], expenseType = [" + expenseType + "], amount = [" + amount + "]");
-        SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy");
         ContentValues values = new ContentValues();
         values.put("date", dateFormat.format(date));
         values.put("account_no", accountNo);
@@ -39,7 +40,7 @@ public class PersistentTransactionDAO implements TransactionDAO {
 
     @Override
     public List<Transaction> getAllTransactionLogs()  {
-        List <Transaction>transaction = new ArrayList();
+        List <Transaction>transaction = new ArrayList<>();
         Cursor cursor = db.query("transaction_log", null, null, null, null, null, null);
         cursor.moveToFirst();
         while(cursor.moveToNext()) {
@@ -70,7 +71,7 @@ public class PersistentTransactionDAO implements TransactionDAO {
         while(cursor.moveToNext()) {
             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
             Date date = format.parse(cursor.getString(2));
-            Log.d("ddddddddd",date.toString());
+            //Log.d("ddddddddd",date.toString());
             String acc_no= cursor.getString(1);
             ExpenseType expenseType;
             if(cursor.getString(3).equalsIgnoreCase("INCOME")){
